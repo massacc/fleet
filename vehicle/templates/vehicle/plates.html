@@ -1,0 +1,14 @@
+{% extends 'vehicle/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <h3>Dane rejestracyjne</h3>
+    <h4>historia wpisów</h4>
+    <p>
+    <form method='post'> {% csrf_token %}
+        {% crispy formset %}
+        <button type='submit'>Save</button>
+    </form>
+    </p>
+{% endblock %}
+

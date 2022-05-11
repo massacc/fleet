@@ -1,0 +1,14 @@
+{% extends 'vehicle/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <form method='post'> {% csrf_token %}
+        {{ formset.management_form|crispy }}
+        {% for form in formset %}
+            <p>
+                {{ form.select }} {{ form.model.value }} {{ form.registration_plate.value }}
+            </p>
+        {% endfor %}
+        <input type="submit" value="Wyślij">
+    </form>
+{% endblock %}

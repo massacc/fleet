@@ -1,0 +1,11 @@
+{% extends 'vehicle/base.html' %}
+
+{% block content %}
+
+    <div class="container">
+        <p>Dziękujemy za bycie na stronie.<br>Zapraszamy ponownie</p>
+
+        <a href="{% url 'vehicle:vehicle_list' %}">Wróć do strony</a>
+    </div>
+
+{% endblock %}

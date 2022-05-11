@@ -1,0 +1,17 @@
+{% extends "vehicle/base.html" %}
+
+{% block title %}Manager floty{% endblock %}
+
+{% block content %}
+    <h1>Czy na pewno chces usunąc pojazd {{ vehicle.model}} <br/>
+    o numerze rejestracyjnym {{vehicle.registration_plate }}?
+    </h1>
+    <div>
+        <form method='post'>{% csrf_token %}
+
+            <input type='submit' value=Tak>
+
+        </form>
+        <a href={% url 'vehicle:vehicle_list' %}>Nie</a>
+    </div>
+{% endblock %}

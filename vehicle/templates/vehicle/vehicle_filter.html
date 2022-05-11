@@ -1,0 +1,55 @@
+{% extends "vehicle/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Vehicles{% endblock %}
+
+{% block content %}
+    <div>
+    <form method="get">
+        {{ filter.form|crispy }}
+        <button type="submit" class="btn btn-secondary">Search</button>
+    </form>
+    </div>
+    <div>
+        <a href= "{% url 'vehicle:vehicle_create_view' %}" class="link-success">Add vehicle</a>
+    </div>
+
+    <div>
+    <form action='{% url "vehicle:vehicle_filter" %}' method='post'> {% csrf_token %}
+        <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope='col'>Select</th>
+                <th scope="col">Registration plate</th>
+                <th scope="col">Model</th>
+                <th scope="col">Production year</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vehicle in filter.qs %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>
+                        <input type="checkbox" name='item' value="{{ vehicle.id }}"/>
+                    </td>
+                    <td>
+                        <a href="{{ vehicle.get_absolute_url }}" class="link-dark">
+                            {{ vehicle.plate }}</a>
+                    </td>
+                    <td><a href="{{ doc.get_absolute_url }}" class="link-dark">
+                            {{ vehicle.name }}</a>
+                    </td>
+                    <td><a href="{{ doc.get_absolute_url }}" class="link-dark">
+                            {{ vehicle.production_year }}</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button type="submit" name="button" value="delete" class="btn btn-secondary">Usuń zaznaczone</button>
+    <button type="submit" name="button" value="get-csv" class="btn btn-secondary">Pobierz dane</button>
+    </form>
+    </div>
+
+{% endblock %}

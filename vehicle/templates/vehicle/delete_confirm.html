@@ -1,0 +1,17 @@
+{% extends "vehicle/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Delete vehicles{% endblock %}
+
+{% block content %}
+    <div>
+        <h3>Are you sure you want to delete selected vehicles?</h3>
+        <div>
+            <form action="{% url 'vehicle:delete_confirm' items %}" method='post'> {% csrf_token %}
+                {{ form.items.as_hidden }}
+                <button type="submit" name="button" value="yes" class="btn btn-success">Yes</button>
+                <button type="submit" name="button" value="no" class="btn btn-danger">No</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
