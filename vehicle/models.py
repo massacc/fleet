@@ -4,6 +4,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.urls import reverse
 from datetime import datetime
 
+#coś tu napiszemy
 
 class Company(models.Model):
     name = models.CharField(max_length=250)
