@@ -4,7 +4,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.urls import reverse
 from datetime import datetime
 
-#coś tu napiszemy
+
 
 class Company(models.Model):
     name = models.CharField(max_length=250)
@@ -114,7 +114,7 @@ class Vehicle(models.Model):
             return f'{self.id}'
 
     def get_absolute_url(self):
-        return reverse('vehicle:vehicle_detail',
+        return reverse('vehicle:details',
                         args = [self.pk])
 
 class Ownership(models.Model):

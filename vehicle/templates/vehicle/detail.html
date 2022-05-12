@@ -8,11 +8,13 @@
     <p>
     <h3>Registraion plate</h3>
     <h2>{{ vehicle.plate }}</h2>
-        <a href="{% url 'vehicle:registration_list' vehicle.id %}" class="link-secondary">Change</a>
+        <!-- to do: registration plates managment :) form -->
+        <!-- <a href="%{ url 'vehicle:registration_list' vehicle.id }%" class="link-secondary">Change</a> -->
+        <a href="#" class="link-secondary">Change</a>
     </p>
 
 
-    <form action='{% url "vehicle:vehicle_detail" vehicle.id %}' method="post">
+    <form action='{% url "vehicle:details" vehicle.id %}' method="post">
         {{ vehicle_form|crispy }}
         {% csrf_token %}
         <button type="submit" value="Zapisz">Zapisz</button>
