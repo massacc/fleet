@@ -37,7 +37,8 @@ router.register(r'users', UserViewSet)
 
 urlpatterns = i18n_patterns(
     path('admin/', admin.site.urls),
-    path('', include('vehicle.urls', namespace='vehicle')),
+    path('rosetta/', include('rosetta.urls')),
     path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('', include('vehicle.urls', namespace='vehicle')),
 )
