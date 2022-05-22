@@ -1,18 +1,21 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse
-from django.views.generic import ListView, DetailView
+#from django.views.generic import ListView, DetailView
 # Create your views here.
-from .models import Vehicle, Registration, VehicleModel, Manufacturer
-from django.views.generic.edit import CreateView, DeleteView
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.urls import reverse_lazy
-from django.forms import modelformset_factory, inlineformset_factory
-from django_filters.views import FilterView
+from .models import Vehicle
+#VehicleModel, Manufacturer
+# Registration,
+#from django.views.generic.edit import CreateView, DeleteView
+#from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+#from django.urls import reverse_lazy
+#from django.forms import modelformset_factory, inlineformset_factory
+#from django_filters.views import FilterView
 from .filters import VehicleFilter
 from .forms import VehicleForm, RegistrationForm, VehicleDeleteConfirmForm
 
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
-
+@login_required
 def vehicle_filter(request):
     f = VehicleFilter(request.GET, queryset=Vehicle.objects.all())
 
@@ -22,9 +25,6 @@ def vehicle_filter(request):
 
         items = list(request.POST.getlist('item'))
         if command == 'delete':
-            #for vehicle in Vehicle.objects.filter(pk__in=items):
-            #    vehicle.delete()
-            #f = VehicleFilter(request.GET, queryset=Vehicle.objects.all())
             vehicle_ids = ",".join(str(i) for i in items)
             if vehicle_ids:
                 return redirect(reverse('vehicle:delete_confirm', args=[vehicle_ids]))
@@ -35,6 +35,7 @@ def vehicle_filter(request):
 
     return render(request, "vehicle/vehicle_filter.html", {'filter':f})
 
+@login_required
 def edit(request, pk):
     vehicle = get_object_or_404(Vehicle, pk=pk)
     if request.method=='POST':
@@ -52,6 +53,7 @@ def edit(request, pk):
                 {'vehicle_form':vehicle_form,
                 'vehicle':vehicle})
 
+@login_required
 def create(request):
 
     if request.method == 'POST':
@@ -71,6 +73,7 @@ def create(request):
                 {'vehicle_form':vehicle_form,
                 'registration_form':registration_form})
 
+@login_required
 def delete_confirm(request, vehicle_ids=None):
 
     if request.method=='POST':
