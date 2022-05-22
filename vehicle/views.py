@@ -10,21 +10,32 @@ from django_filters.views import FilterView
 from .filters import VehicleFilter
 from .forms import VehicleForm, RegistrationForm, VehicleDeleteConfirmForm
 
-def vehicle_edit(request, pk=None):
-    VehicleFormSet = inlineformset_factory(VehicleModel, Vehicle, exclude=('id',), extra=2)
-    vehicle = VehicleModel.objects.get(pk=pk)
-    formset = VehicleFormSet(instance=vehicle)
-    if request.method=='POST':
-        formset = VehicleFormSet(request.POST, request.FILES, instance=vehicle)
-        formset.save()
-
-    return render(request,
-                'vehicle/edit.html',
-                {'formset':formset,
-                'object':vehicle})
+from django.contrib import messages
 
 
-def vehicle_detail(request, pk):
+def vehicle_filter(request):
+    f = VehicleFilter(request.GET, queryset=Vehicle.objects.all())
+
+    if request.method=="POST":
+        command = request.POST.get('button')
+
+
+        items = list(request.POST.getlist('item'))
+        if command == 'delete':
+            #for vehicle in Vehicle.objects.filter(pk__in=items):
+            #    vehicle.delete()
+            #f = VehicleFilter(request.GET, queryset=Vehicle.objects.all())
+            vehicle_ids = ",".join(str(i) for i in items)
+            if vehicle_ids:
+                return redirect(reverse('vehicle:delete_confirm', args=[vehicle_ids]))
+            else:
+                messages.warning(request, 'No item selected')
+    else:
+        pass
+
+    return render(request, "vehicle/vehicle_filter.html", {'filter':f})
+
+def edit(request, pk):
     vehicle = get_object_or_404(Vehicle, pk=pk)
     if request.method=='POST':
         if pk:
@@ -40,6 +51,53 @@ def vehicle_detail(request, pk):
                 'vehicle/detail.html',
                 {'vehicle_form':vehicle_form,
                 'vehicle':vehicle})
+
+def create(request):
+
+    if request.method == 'POST':
+        vehicle_form = VehicleForm(data=request.POST)
+        registration_form = RegistrationForm(data=request.POST)
+
+        if vehicle_form.is_valid() and registration_form.is_valid():
+            new_registration = registration_form.save(commit=False)
+            new_vehicle = vehicle_form.save()
+            new_registration.vehicle = new_vehicle
+            new_registration.save()
+    else:
+        vehicle_form = VehicleForm()
+        registration_form = RegistrationForm()
+    return render(request,
+                'vehicle/create.html',
+                {'vehicle_form':vehicle_form,
+                'registration_form':registration_form})
+
+def delete_confirm(request, vehicle_ids=None):
+
+    if request.method=='POST':
+        if request.POST.get('button')=='yes':
+
+            items = vehicle_ids.split(',')
+            for index in range(0, len(items)):
+                try:
+                    items[index] = int(items[index])
+                except:
+                    pass
+            vehicles = Vehicle.objects.filter(pk__in=items)
+            for v in vehicles:
+                v.delete()
+        return redirect("vehicle:vehicle_filter")
+    else:
+        f = VehicleDeleteConfirmForm()
+    return render(request,
+                    'vehicle/delete_confirm.html',
+                    {'form':f, 'items':vehicle_ids}
+                    )
+###################################################################################
+
+
+
+
+'''
 def registration_list(request, pk):
     # formset is not proper solution !!!
     # using it in these function just as formset practice
@@ -102,27 +160,10 @@ def plate_list(request, vehicle_id):
                 'vehicle/plates.html',
                 {'formset':formset})
 
-def vehicle_filter(request):
-    f = VehicleFilter(request.GET, queryset=Vehicle.objects.all())
 
-    if request.method=="POST":
-        command = request.POST.get('button')
-
-
-        items = list(request.POST.getlist('item'))
-        print('itemsy przekazane', items)
-        if command == 'delete':
-            #for vehicle in Vehicle.objects.filter(pk__in=items):
-            #    vehicle.delete()
-            #f = VehicleFilter(request.GET, queryset=Vehicle.objects.all())
-            vehicle_ids = ",".join(str(i) for i in items)
-            return redirect(reverse('vehicle:delete_confirm', args=[vehicle_ids]))
-    else:
-        pass
-
-    return render(request, "vehicle/vehicle_filter.html", {'filter':f})
 
 ########## funkcja testowa #########################
+
 def document_list(request):
     documents = DocumentVehicle.objects.all()
 
@@ -156,13 +197,13 @@ class VehicleCreateView(LoginRequiredMixin, CreateView):
     context_object_name = 'vehicle'
     fields = ['name', 'registration', 'registration_date', 'vin_number', 'axles', 'production_year', 'suspension']
     success_url = reverse_lazy('vehicle:vehicle_filter')
-'''
+
 def vehicle_crud(request, vehicle_id):
     vehicle = get_object_or_404(DocumentVehicle, id=vehicle_id)
 
     if request.method = 'POST':
         form =
-'''
+
 
 
 def document(request):
@@ -194,48 +235,19 @@ def document_list_filter(request):
 
     return render(request, 'vehicle/document_list2.html',
                     {'filter':f})
-def create(request):
 
-    if request.method == 'POST':
-        vehicle_form = VehicleForm(data=request.POST)
-        registration_form = RegistrationForm(data=request.POST)
 
-        if vehicle_form.is_valid() and registration_form.is_valid():
-            new_registration = registration_form.save(commit=False)
-            new_vehicle = vehicle_form.save()
-            new_registration.vehicle = new_vehicle
-            new_registration.save()
-    else:
-        vehicle_form = VehicleForm()
-        registration_form = RegistrationForm()
-    return render(request,
-                'vehicle/create.html',
-                {'vehicle_form':vehicle_form,
-                'registration_form':registration_form})
 
-def delete_confirm(request, vehicle_ids=None):
-
+def vehicle_edit(request, pk=None):
+    VehicleFormSet = inlineformset_factory(VehicleModel, Vehicle, exclude=('id',), extra=2)
+    vehicle = VehicleModel.objects.get(pk=pk)
+    formset = VehicleFormSet(instance=vehicle)
     if request.method=='POST':
-        print('jest post')
-        print('jtest ', request.POST.get('button'))
-        if request.POST.get('button')=='yes':
+        formset = VehicleFormSet(request.POST, request.FILES, instance=vehicle)
+        formset.save()
 
-            items = vehicle_ids.split(',')
-            for index in range(0, len(items)):
-                try:
-                    items[index] = int(items[index])
-                except:
-                    pass
-            print('######### itemsy: ', items)
-            vehicles = Vehicle.objects.filter(pk__in=items)
-            for v in vehicles:
-                print('aksuje pojazd')
-                v.delete()
-        return redirect("vehicle:vehicle_filter")
-    else:
-        f = VehicleDeleteConfirmForm()
     return render(request,
-                    'vehicle/delete_confirm.html',
-                    {'form':f, 'items':vehicle_ids}
-                    )
-
+                'vehicle/edit.html',
+                {'formset':formset,
+                'object':vehicle})
+'''

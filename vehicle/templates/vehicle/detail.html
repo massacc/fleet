@@ -14,7 +14,7 @@
     </p>
 
 
-    <form action='{% url "vehicle:details" vehicle.id %}' method="post">
+    <form action='{% url "vehicle:edit" vehicle.id %}' method="post">
         {{ vehicle_form|crispy }}
         {% csrf_token %}
         <button type="submit" value="Zapisz">Zapisz</button>

@@ -114,7 +114,7 @@ class Vehicle(models.Model):
             return f'{self.id}'
 
     def get_absolute_url(self):
-        return reverse('vehicle:details',
+        return reverse('vehicle:edit',
                         args = [self.pk])
 
 class Ownership(models.Model):
