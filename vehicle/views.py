@@ -21,8 +21,6 @@ def vehicle_filter(request):
 
     if request.method=="POST":
         command = request.POST.get('button')
-
-
         items = list(request.POST.getlist('item'))
         if command == 'delete':
             vehicle_ids = ",".join(str(i) for i in items)
