@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-20 00:22+0200\n"
+"POT-Creation-Date: 2022-05-22 12:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -40,10 +40,94 @@ msgstr ""
 msgid "test"
 msgstr ""
 
-#: fleetmanager/settings.py:123
+#: fleetmanager/settings.py:124
 msgid "polski"
 msgstr ""
 
-#: fleetmanager/settings.py:124
+#: fleetmanager/settings.py:125
 msgid "angielski"
+msgstr ""
+
+#: vehicle/models.py:11 vehicle/models.py:43 vehicle/models.py:66
+msgid "Name"
+msgstr ""
+
+#: vehicle/models.py:20
+msgid "Make"
+msgstr ""
+
+#: vehicle/models.py:29
+msgid "Lorry"
+msgstr ""
+
+#: vehicle/models.py:30
+msgid "Truck-tractor"
+msgstr ""
+
+#: vehicle/models.py:31
+msgid "Ballast tractor"
+msgstr ""
+
+#: vehicle/models.py:32
+msgid "Trailer"
+msgstr ""
+
+#: vehicle/models.py:33
+msgid "Semi-trailer"
+msgstr ""
+
+#: vehicle/models.py:34
+msgid "Bus"
+msgstr ""
+
+#: vehicle/models.py:35 vehicle/models.py:61
+msgid "Other"
+msgstr ""
+
+#: vehicle/models.py:45
+msgid "Type"
+msgstr ""
+
+#: vehicle/models.py:59
+msgid "Air suspension"
+msgstr ""
+
+#: vehicle/models.py:60
+msgid "Equivalent to air suspension"
+msgstr ""
+
+#: vehicle/models.py:68
+msgid "First registatrion"
+msgstr ""
+
+#: vehicle/models.py:69
+msgid "Date of first registratrion in Poland"
+msgstr ""
+
+#: vehicle/models.py:73
+msgid "VIN"
+msgstr ""
+
+#: vehicle/models.py:74
+msgid "Chassis number / VIN / SN number"
+msgstr ""
+
+#: vehicle/models.py:78
+msgid "Number of axles"
+msgstr ""
+
+#: vehicle/models.py:85
+msgid "Weight"
+msgstr ""
+
+#: vehicle/models.py:86
+msgid "Vehicle weight (if semi-tractor)"
+msgstr ""
+
+#: vehicle/models.py:90
+msgid "Gross vehicle mass"
+msgstr ""
+
+#: vehicle/models.py:91
+msgid "Maximum permissible laden weight"
 msgstr ""
