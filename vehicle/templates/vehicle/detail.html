@@ -1,23 +1,23 @@
 {% extends "vehicle/base.html" %}
+{% load i18n %}
 {% load django_bootstrap5 %}
 {% block title %}Manager floty{% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
-    <h1>Vehicle details</h1>
 
-    <p>
-    <h3>Registraion plate</h3>
+    <h1>{% trans "Vehicle details" %}</h1>
+    <h3>{% trans "Registraion plate" %}</h3>
     <h2>{{ vehicle.plate }}</h2>
         <!-- to do: registration plates managment :) form -->
         <!-- <a href="%{ url 'vehicle:registration_list' vehicle.id }%" class="link-secondary">Change</a> -->
-        <a href="#" class="link-secondary">Change</a>
-    </p>
+        <a href="#" class="link-secondary">{% trans "Change" %}</a>
+    </div>
 
 
     <form action='{% url "vehicle:edit" vehicle.id %}' method="post">
         {{ vehicle_form|crispy }}
         {% csrf_token %}
-        <button type="submit" value="Zapisz">Zapisz</button>
+        <button type="submit" value="Zapisz">{% trans "Save" %}</button>
 
     </form>
 

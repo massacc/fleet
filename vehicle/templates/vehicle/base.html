@@ -25,7 +25,7 @@
                      {% if messages %}
                         <ul class="messages">
                             {% for message in messages %}
-                                <li class="alert-{{ message.tags }}">
+                                <li class=" alert alert-{{ message.tags }}">
                                     {{ message|safe }}
                                 </li>
                             {% endfor %}
@@ -51,9 +51,9 @@
                 </div>
                 <div class="col col-md-1">
                     {% if request.user.is_authenticated %}
-                        <a href="{% url 'vehicle:logout' %}">Wyloguj się</a>
+                        <a href="{% url 'vehicle:logout' %}">{% trans "Log out" %}</a>
                     {% else %}
-                        <a href="{% url 'vehicle:login' %}">Zaloguj się</a>
+                        <a href="{% url 'vehicle:login' %}">{% trans "Log in" %}</a>
                     {% endif %}
                 </div>
                 <div class="col col-12">
@@ -64,10 +64,10 @@
             <div class="row">
                 <!--sidebar -->
                 <div class="col col-md-2 border border-dark">
-                    <div><a href="{% url 'vehicle:vehicles' %}">Flota</a></div>
-                    <div>Pracownicy</div>
-                    <div>Kontrahenci</div>
-                    <div><a href={% url 'admin:index' %}>Panel Administratora</a></div>
+                    <div><a href="{% url 'vehicle:vehicles' %}">{% trans "Fleet" %}</a></div>
+                    <div>{% trans "Documents" %}</div>
+                    <div>{% trans "Customers" %}</div>
+                    <div><a href={% url 'admin:index' %}>{% trans "Admin site" %}</a></div>
                 </div>
 
                 <!--content-->

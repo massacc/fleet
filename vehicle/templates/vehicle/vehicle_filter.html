@@ -1,17 +1,20 @@
 {% extends "vehicle/base.html" %}
+#{% load i18n %}
 {% load crispy_forms_tags %}
-
+{% load django_bootstrap5 %}
 {% block title %}Vehicles{% endblock %}
 
 {% block content %}
-    <div>
+
     <form method="get">
-        {{ filter.form|crispy }}
-        <button type="submit" class="btn btn-secondary">Search</button>
+        <h6>{{ filter.form.plate.label }}</h6>
+        <h5>{{ filter.form.plate }}</h5>
+
+        <button type="submit" class="btn btn-secondary">{% trans "Search" %}</button>
     </form>
-    </div>
+
     <div>
-        <a href= "{% url 'vehicle:create' %}" class="link-success">Add vehicle</a>
+        <a href= "{% url 'vehicle:create' %}" class="link-success">{% trans "Add vehicle" %}</a>
     </div>
 
     <div>
@@ -20,10 +23,10 @@
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope='col'>Select</th>
-                <th scope="col">Registration plate</th>
-                <th scope="col">Model</th>
-                <th scope="col">Production year</th>
+                <th scope='col'>{% trans "Select" %}</th>
+                <th scope="col">{% trans "Registration plate" %}</th>
+                <th scope="col">{% trans "Model" %}</th>
+                <th scope="col">{% trans "Production year" %}</th>
             </tr>
         </thead>
         <tbody>
@@ -47,8 +50,8 @@
             {% endfor %}
         </tbody>
     </table>
-    <button type="submit" name="button" value="delete" class="btn btn-secondary">Usuń zaznaczone</button>
-    <button type="submit" name="button" value="get-csv" class="btn btn-secondary">Pobierz dane</button>
+    <button type="submit" name="button" value="delete" class="btn btn-danger">{% trans "Delete" %}</button>
+    <button type="submit" name="button" value="get-csv" class="btn btn-secondary">{% trans "Get data" %}</button>
     </form>
     </div>
 
