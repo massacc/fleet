@@ -96,7 +96,7 @@ class Vehicle(models.Model):
         null = True,
         verbose_name = 'Gross combined weight rating',
         help_text =
-            'maximum permissible laden weight of a vehicle combination',
+            _('maximum permissible laden weight of a vehicle combination'),
         default=0)
 
     suspension = models.CharField(max_length=10,
