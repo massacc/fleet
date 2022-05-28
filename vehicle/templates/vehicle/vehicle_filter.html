@@ -5,13 +5,11 @@
 {% block title %}Vehicles{% endblock %}
 
 {% block content %}
-
     <form method="get">
-        <h6>{{ filter.form.plate.label }}</h6>
-        <h5>{{ filter.form.plate }}</h5>
-
+        {{ filter.form|crispy }}
         <button type="submit" class="btn btn-secondary">{% trans "Search" %}</button>
     </form>
+
 
     <div>
         <a href= "{% url 'vehicle:create' %}" class="link-success">{% trans "Add vehicle" %}</a>

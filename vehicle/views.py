@@ -28,6 +28,8 @@ def vehicle_filter(request):
                 return redirect(reverse('vehicle:delete_confirm', args=[vehicle_ids]))
             else:
                 messages.warning(request, 'No item selected')
+        elif command == 'get-csv':
+            export_to_csv('x', request)
     else:
         pass
 
@@ -97,7 +99,11 @@ def delete_confirm(request, vehicle_ids=None):
 
 
 
-
+def export_to_csv(model, request):
+    m = Vehicle()
+    m._meta.get
+    print(m._meta.get_fields())
+    return "x"
 '''
 def registration_list(request, pk):
     # formset is not proper solution !!!
