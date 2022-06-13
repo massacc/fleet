@@ -6,14 +6,11 @@ from datetime import datetime
 
 from django.utils.translation import gettext_lazy as _
 
-
 class Company(models.Model):
     name = models.CharField(_('Name'),max_length=250)
 
     def __str__(self):
         return self.name
-
-
 
 class Manufacturer(models.Model):
 
@@ -22,20 +19,16 @@ class Manufacturer(models.Model):
     def __str__(self):
         return f'{self.make}'
 
-
 class VehicleModel(models.Model):
 
     VEHICLE_TYPES = [
         ('1', _('Lorry')),
-        ('2',_('Truck-tractor')),
+        ('2', _('Truck-tractor')),
         ('3', _('Ballast tractor')),
         ('4', _('Trailer')),
         ('5', _('Semi-trailer')),
         ('6', _('Bus')),
         ('0', _('Other'))]
-
-
-
     make = models.ForeignKey(
                             Manufacturer,
                             on_delete = models.PROTECT,
@@ -96,7 +89,7 @@ class Vehicle(models.Model):
         null = True,
         verbose_name = 'Gross combined weight rating',
         help_text =
-            _('maximum permissible laden weight of a vehicle combination'),
+            _('Maximum permissible laden weight of a vehicle combination'),
         default=0)
 
     suspension = models.CharField(max_length=10,
