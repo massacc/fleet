@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models import UniqueConstraint
-from django.core.validators import MaxValueValidator, MinValueValidator
+#from django.core.validators import MaxValueValidator, MinValueValidator
 from django.urls import reverse
 from datetime import datetime
 
@@ -71,7 +71,7 @@ class Vehicle(models.Model):
                     verbose_name = _('Number of axles'),
                     default = 2)
     production_year = models.IntegerField(
-                                validators = [MinValueValidator(1900)])
+                                default=0)
     weight = models.FloatField(
                         blank = True,
                         null = True,
@@ -178,6 +178,9 @@ class Registration(models.Model):
     def __str__(self):
         return f'{self.plate}'
 
+    def get_absolute_url(self):
+        return reverse('vehicle:',
+                        args = [self.pk])
     class Meta:
        constraints = [UniqueConstraint(fields=['plate', 'start_date'], name='unuque_plate')]
 
