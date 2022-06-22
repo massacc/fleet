@@ -3,8 +3,8 @@ from django.db.models import UniqueConstraint
 #from django.core.validators import MaxValueValidator, MinValueValidator
 from django.urls import reverse
 from datetime import datetime
-
 from django.utils.translation import gettext_lazy as _
+from .validators import validate_future_date
 
 class Company(models.Model):
     name = models.CharField(_('Name'),max_length=250)
@@ -163,7 +163,8 @@ class Registration(models.Model):
     start_date = models.DateField(blank=False,
                                     #default=datetime.now,
                                     null=True,
-                                    verbose_name='Registration date')
+                                    verbose_name='Registration date',
+                                    validators=[validate_future_date])
     end_date = models.DateField(blank=True,
                                     null=True,
                                     verbose_name='Deregistrarion date')
