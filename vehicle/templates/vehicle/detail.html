@@ -10,7 +10,7 @@
     <h2>{{ vehicle.plate }}</h2>
         <!-- to do: registration plates managment :) form -->
         <!-- <a href="%{ url 'vehicle:registration_list' vehicle.id }%" class="link-secondary">Change</a> -->
-        <a href="#" class="link-secondary">{% trans "Change" %}</a>
+        <a href="{% url 'vehicle:reg_add' vehicle.id %}" class="link-secondary">{% trans "Change" %}</a>
 
 
 

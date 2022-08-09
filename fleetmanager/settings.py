@@ -43,8 +43,10 @@ INSTALLED_APPS = [
     'vehicle.apps.VehicleConfig',
     'django.contrib.admin',
     'rest_framework',
+    'rest_framework.authtoken',
     'django_filters',
     'rosetta',
+    'documents.apps.DocumentsConfig',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

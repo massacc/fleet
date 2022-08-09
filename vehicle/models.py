@@ -96,8 +96,8 @@ class Vehicle(models.Model):
                                     choices= SUSPENSION_TYPES)
 
 
-    @property
-    def plate(self):
+    @property   
+    def active_plate(self):
         #registration = Registration.objects.filter(id=self.id).order_by(
         #registration = self.registrations.order_by('-start_date')
 
@@ -108,8 +108,8 @@ class Vehicle(models.Model):
             return ''
 
     def __str__(self):
-        if self.plate:
-            return self.plate
+        if self.active_plate:
+            return self.active_plate
         else:
             return f'{self.id}'
 

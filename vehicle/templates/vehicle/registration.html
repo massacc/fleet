@@ -1,14 +1,12 @@
 {% extends "vehicle/base.html" %}
 
-{% block title %}Add vehicle{% endblock %}
+{% block title %}Add registration{% endblock %}
 
 {% block content %}
-    <h1>Vehicle details</h1>
+    <h1>Registration plates</h1>
     <div>
         <form method='post'>{% csrf_token %}
-            {{ registration_form.as_p }}
-            {{ vehicle_form.as_p }}
-
+            {{ form.as_p }}
             <button type='submit' class="btn btn-secondary">Save</button>
         </form>
 

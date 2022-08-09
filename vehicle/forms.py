@@ -1,6 +1,5 @@
 from xml.dom import ValidationErr
 from django import forms
-from traitlets import ValidateHandler
 from .models import Vehicle, Registration
 from datetime import date
 from django.utils.translation import gettext_lazy as _

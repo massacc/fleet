@@ -1,6 +1,7 @@
+from tokenize import Token
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect, reverse
-from .models import Vehicle, VehicleModel
+from .models import Vehicle, VehicleModel, Registration
 import csv
 import datetime
 from .filters import VehicleFilter
@@ -9,7 +10,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 from rest_framework import viewsets
-from .serializers import VehicleSerializer
+from .serializers import VehicleSerializer, RegistrationSerializer
+from rest_framework.authentication import TokenAuthentication
 
 @login_required
 def vehicle_filter(request):
@@ -94,6 +96,33 @@ def delete_confirm(request, vehicle_ids=None):
                     'vehicle/delete_confirm.html',
                     {'form':f, 'items':vehicle_ids})
 
+@login_required
+def registration_create(request, vehicle_id):
+    vehicle = get_object_or_404(Vehicle, pk=vehicle_id)
+    
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            #When adding new registration to vehicle we have to check if it should become default-active. If YES - other registration's has be marked as not active.
+            if form.cleaned_data['active'] == True:
+                for reg in vehicle.registrations.all():
+                    reg.active = False
+                    reg.save()
+
+            registration = form.save(commit=False)
+            registration.vehicle = vehicle
+            registration.save()
+
+            return redirect(reverse('vehicle:edit', args=[vehicle_id]))
+
+    else:
+        form = RegistrationForm()
+
+    return render(request,
+                    'vehicle/registration.html',
+                    {'form':form}
+    )
+
 def export_to_csv(request, items):
     model = Vehicle
     queryset = Vehicle.objects.filter(pk__in=items)
@@ -109,7 +138,7 @@ def export_to_csv(request, items):
     '''
     model._meta has get_fields() method but we cant't use it here becouse:
     obj.plate - it is property not field!
-    need to use get_FOO_display() method
+    have to use get_FOO_display() method
     '''
     for obj in queryset:
         data_row = []
@@ -132,3 +161,11 @@ def export_to_csv(request, items):
 class VehicleViewSet(viewsets.ModelViewSet):
     queryset = Vehicle.objects.all()
     serializer_class = VehicleSerializer
+    authentication_classes = [TokenAuthentication]
+    
+class RegistrationViewSet(viewsets.ModelViewSet):
+    queryset = Registration.objects.all()
+    serializer_class = RegistrationSerializer
+    authentication_classes = [TokenAuthentication]
+
+    

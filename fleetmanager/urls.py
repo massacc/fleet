@@ -15,21 +15,32 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
 from django.conf.urls.i18n import i18n_patterns
-
-from vehicle.views import VehicleViewSet
+from rest_framework.authtoken.views import obtain_auth_token
+from vehicle.views import VehicleViewSet, RegistrationViewSet
 
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'vehicles', VehicleViewSet, basename='vehicles')
-
+router.register(r'registrations', RegistrationViewSet, basename='registrations')
+#print(router.urls)
 urlpatterns = i18n_patterns(
     path('admin/', admin.site.urls),
     path('rosetta/', include('rosetta.urls')),
+    path('documents/', include('documents.urls', namespace='documents')),
     path('api/', include(router.urls)),
+    path('auth/', obtain_auth_token),
     path('', include('vehicle.urls', namespace='vehicle')),
 )
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
+
+print(settings.MEDIA_URL)
+print(settings.MEDIA_ROOT)
