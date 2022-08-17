@@ -1,4 +1,4 @@
-{% extends "vehicle/base.html" %}
+{% extends "fleetmanager/base.html" %}
 #{% load i18n %}
 {% load crispy_forms_tags %}
 {% load django_bootstrap5 %}
@@ -11,9 +11,9 @@
     </form>
 
 
-    <div>
+    <p class="pt-4 pb-2">
         <a href= "{% url 'vehicle:create' %}" class="link-success">{% trans "Add vehicle" %}</a>
-    </div>
+    </p>
 
     <div>
     <form action='{% url "vehicle:vehicles" %}' method='post'> {% csrf_token %}
@@ -38,10 +38,10 @@
                         <a href="{{ vehicle.get_absolute_url }}" class="link-dark">
                             {{ vehicle.plate }}</a>
                     </td>
-                    <td><a href="{{ doc.get_absolute_url }}" class="link-dark">
+                    <td><a href="{{ vehicle.get_absolute_url }}" class="link-dark">
                             {{ vehicle.name }}</a>
                     </td>
-                    <td><a href="{{ doc.get_absolute_url }}" class="link-dark">
+                    <td><a href="{{ vehicle.get_absolute_url }}" class="link-dark">
                             {{ vehicle.production_year }}</a>
                     </td>
                 </tr>

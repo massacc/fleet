@@ -1,0 +1,18 @@
+{% extends "fleetmanager/base.html" %}
+<!-- {% load django_bootstrap5 %} -->
+{% load crispy_forms_tags %}
+<!-- {% load i18n %} -->
+
+{% block content %}
+    <div>
+        <form action="{% url 'login' %}" method='post' >
+            {% csrf_token %}
+            {{ form|crispy}}
+            
+            <div class="py-4">
+                <button type='submit' class="btn btn-secondary">{% trans "Login" %}</button>
+            </div>
+            <input type="hidden" name="next" value="{{ next }}">
+        </form>
+    </div>
+{% endblock %}

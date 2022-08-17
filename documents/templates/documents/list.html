@@ -1,4 +1,4 @@
-{% extends "vehicle/base.html" %}
+{% extends "fleetmanager/base.html" %}
 #{% load i18n %}
 {% load crispy_forms_tags %}
 {% load django_bootstrap5 %}
@@ -11,9 +11,9 @@
     </form>
 
 
-    <div>
+    <p class="pt-4 pb-2">
         <a href= "{% url 'documents:create' %}" class="link-success">{% trans "Add document" %}</a>
-    </div>
+    </p>
 
     <div>
     <form action='{% url "documents:documents" %}' method='post'> {% csrf_token %}

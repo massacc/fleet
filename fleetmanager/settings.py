@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'django_bootstrap5',
+    'fleetmanager.apps.FleetmanagerConfig',
     'vehicle.apps.VehicleConfig',
     'django.contrib.admin',
     'rest_framework',
@@ -112,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGIN_REDIRECT_URL = 'vehicle:vehicle_list'
+LOGIN_REDIRECT_URL = 'vehicle:vehicles'
 #LOGOUT_REDIRECT_URL = 'vehicle:logout'
 #LOGOUT_URL = 'vehicle:logout'
 
