@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django_bootstrap5',
     'fleetmanager.apps.FleetmanagerConfig',
-    'vehicle.apps.VehicleConfig',
+    'vehicles.apps.VehiclesConfig',
     'django.contrib.admin',
     'rest_framework',
     'rest_framework.authtoken',

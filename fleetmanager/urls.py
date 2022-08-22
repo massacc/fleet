@@ -22,7 +22,7 @@ from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
 from django.conf.urls.i18n import i18n_patterns
 from rest_framework.authtoken.views import obtain_auth_token
-from vehicle.views import VehicleViewSet, RegistrationViewSet
+from vehicles.views import VehicleViewSet, RegistrationViewSet
 
 app_name = 'fleetmanager'
 
@@ -37,7 +37,7 @@ urlpatterns = i18n_patterns(
     path('api/', include(router.urls)),
     path('auth/', obtain_auth_token),
     path('documents/', include('documents.urls', namespace='documents')),
-    path('vehicles/', include('vehicle.urls', namespace='vehicles')),
+    path('vehicles/', include('vehicles.urls', namespace='vehicles')),
     path('accounts/', include('django.contrib.auth.urls')),
 )
 
