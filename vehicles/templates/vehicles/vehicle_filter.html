@@ -12,11 +12,11 @@
 
 
     <p class="pt-4 pb-2">
-        <a href= "{% url 'vehicle:create' %}" class="link-success">{% trans "Add vehicle" %}</a>
+        <a href= "{% url 'vehicles:create' %}" class="link-success">{% trans "Add vehicle" %}</a>
     </p>
 
     <div>
-    <form action='{% url "vehicle:vehicles" %}' method='post'> {% csrf_token %}
+    <form action='{% url "vehicles:vehicles" %}' method='post'> {% csrf_token %}
         <table class="table table-striped">
         <thead>
             <tr>
