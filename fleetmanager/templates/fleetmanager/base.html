@@ -141,6 +141,13 @@
   </header>
 
   <main>
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li{% if message.tags %} class="alert alert-{{message.tags}}" {% endif %}>{{ message }}</li>  
+        {% endfor %}
+      </ul>
+    {% endif %}
     <!-- <h1>Get started with Bootstrap</h1>
     <p class="fs-5 col-md-8">Quickly and easily get started with Bootstrap's compiled, production-ready files with this barebones example featuring some basic HTML and helpful links. Download all our examples to get started.</p>
 
