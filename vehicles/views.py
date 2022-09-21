@@ -23,7 +23,7 @@ def vehicle_filter(request):
         if command == 'delete':
             vehicle_ids = ",".join(str(i) for i in items)
             if vehicle_ids:
-                return redirect(reverse('vehicle:delete_confirm', args=[vehicle_ids]))
+                return redirect(reverse('vehicles:delete_confirm', args=[vehicle_ids]))
             else:
                 messages.warning(request, 'No item selected')
         elif command == 'get-csv':
@@ -34,7 +34,7 @@ def vehicle_filter(request):
     else:
         pass
 
-    return render(request, "vehicle/vehicle_filter.html", {'filter':f})
+    return render(request, "vehicles/vehicle_filter.html", {'filter':f})
 
 @login_required
 def edit(request, pk):
@@ -50,7 +50,7 @@ def edit(request, pk):
         vehicle_form = VehicleForm(instance=vehicle)
 
     return render(request,
-                'vehicle/detail.html',
+                'vehicles/detail.html',
                 {'vehicle_form':vehicle_form,
                 'vehicle':vehicle})
 
@@ -70,7 +70,7 @@ def create(request):
         vehicle_form = VehicleForm()
         registration_form = RegistrationForm()
     return render(request,
-                'vehicle/create.html',
+                'vehicles/create.html',
                 {'vehicle_form':vehicle_form,
                 'registration_form':registration_form})
 
@@ -89,11 +89,11 @@ def delete_confirm(request, vehicle_ids=None):
             vehicles = Vehicle.objects.filter(pk__in=items)
             for v in vehicles:
                 v.delete()
-        return redirect("vehicle:vehicle_filter")
+        return redirect("vehicles:vehicle_filter")
     else:
         f = VehicleDeleteConfirmForm()
     return render(request,
-                    'vehicle/delete_confirm.html',
+                    'vehicles/delete_confirm.html',
                     {'form':f, 'items':vehicle_ids})
 
 @login_required
@@ -113,13 +113,13 @@ def registration_create(request, vehicle_id):
             registration.vehicle = vehicle
             registration.save()
 
-            return redirect(reverse('vehicle:edit', args=[vehicle_id]))
+            return redirect(reverse('vehicles:edit', args=[vehicle_id]))
 
     else:
         form = RegistrationForm()
 
     return render(request,
-                    'vehicle/registration.html',
+                    'vehicles/registration.html',
                     {'form':form}
     )
 
