@@ -113,9 +113,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGIN_REDIRECT_URL = 'vehicle:vehicles'
-#LOGOUT_REDIRECT_URL = 'vehicle:logout'
-#LOGOUT_URL = 'vehicle:logout'
+LOGIN_REDIRECT_URL = 'vehicles:vehicles'
+#LOGOUT_REDIRECT_URL = 'vehicles:logout'
+#LOGOUT_URL = 'vehicless:logout'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
