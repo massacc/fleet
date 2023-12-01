@@ -1,14 +1,59 @@
 {% extends "fleetmanager/base.html" %}
-
+{% load crispy_forms_tags %}
 {% block title %}Documents{% endblock %}
 
 {% block content %}
-    <h1>Add document</h1>
+<h1>Add document</h1>
+<div>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Change vehicle
+    </button>
+    
     <div>
-        <form action="" method='post' enctype="multipart/form-data">{% csrf_token %}
-            {{ form.as_p }}
-            <button type='submit' class="btn btn-secondary">Save</button>
-        </form>
-
+        <label for="vehiclesDataList" class="form-label">Vehicles</label>
+        <input class="form-control" list="datalistOptions" id="vehiclesDataList" placeholder="Type to search..." value="EBR20RR">
+        <datalist id="datalistOptions">
+            {% for plate in plates %}
+                <option value="{{ plate.plate }}" data-vehicle-id="{{ plate.vehicle.id }}">
+                
+            {% endfor %}
+        </datalist>
     </div>
+  
+    <form action="" method='post' enctype="multipart/form-data">{% csrf_token %}
+        {{ form|crispy }}
+        <button type='submit' class="btn btn-secondary">Save</button>
+    </form>
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ol>
+                    <li><button type="button" class="btn btn-link">EBR20RR</button></li>
+                    <li><button type="button" class="btn btn-link">EBR30TK</button></li>
+                    <li><button type="button" class="btn btn-link">EBR22JP</button></li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="test()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script >
+    function test()
+    {
+        const t = document.getElementById
+    }
+</script>
 {% endblock %}

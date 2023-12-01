@@ -3,12 +3,13 @@ from django import forms
 from .models import Vehicle, Registration
 from datetime import date
 from django.utils.translation import gettext_lazy as _
+from django.forms import BaseModelFormSet
 
 class VehicleForm(forms.ModelForm):
     class Meta:
         model = Vehicle
         exclude = ('id',)
-        widgets = {'first_registration':forms.widgets.DateInput(attrs=  {'type':'date'})
+        widgets = {'first_registration':forms.widgets.DateInput(format=('%Y-%m-%d'), attrs=  {'type':'date'})
 
         }
 
@@ -25,13 +26,14 @@ class RegistrationForm(forms.ModelForm):
         model = Registration
         fields = ('plate', 'start_date', 'end_date', 'active')
         widgets = {
-            'start_date':forms.widgets.DateInput(attrs={'type':'date'}),
-            'end_date':forms.widgets.DateInput(attrs={'type':'date'})
+            'start_date':forms.widgets.DateInput(format=('%Y-%m-%d'), attrs={'type':'date'}),
+            'end_date':forms.widgets.DateInput(format=('%Y-%m-%d'), attrs={'type':'date'})
         }
-        
+      
 
 class VehicleDeleteConfirmForm(forms.Form):
         items = forms.CharField(disabled=True)
+
 
 
 

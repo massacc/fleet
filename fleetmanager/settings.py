@@ -42,17 +42,24 @@ INSTALLED_APPS = [
     'django_bootstrap5',
     'fleetmanager.apps.FleetmanagerConfig',
     'vehicles.apps.VehiclesConfig',
+    'invoices.apps.InvoicesConfig',
+    'entities.apps.EntitiesConfig',
+    'companies.apps.CompaniesConfig',
     'django.contrib.admin',
     'rest_framework',
     'rest_framework.authtoken',
     'django_filters',
     'rosetta',
     'documents.apps.DocumentsConfig',
+    'django_cleanup.apps.CleanupConfig',
+    'searchableselect',
+    "corsheaders",
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
@@ -138,7 +145,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
-
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
@@ -159,3 +168,24 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
+
+DATE_INPUT_FORMATS = [
+    "%d.%m.%Y",  # '25.10.2006'
+    "%Y-%m-%d",  # '2006-10-25'
+    "%m/%d/%Y",  # '10/25/2006'
+    "%m/%d/%y",  # '10/25/06'
+    "%b %d %Y",  # 'Oct 25 2006'
+    "%b %d, %Y",  # 'Oct 25, 2006'
+    "%d %b %Y",  # '25 Oct 2006'
+    "%d %b, %Y",  # '25 Oct, 2006'
+    "%B %d %Y",  # 'October 25 2006'
+    "%B %d, %Y",  # 'October 25, 2006'
+    "%d %B %Y",  # '25 October 2006'
+    "%d %B, %Y",  # '25 October, 2006'
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    
+]
+

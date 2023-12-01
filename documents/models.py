@@ -41,7 +41,7 @@ class Document(models.Model):
 
     def __str__(self):
         if self.vehicle.all():
-            return f'{self.title} - ({self.vehicle.all()[0]})'
+            return f'{self.title} - ({self.vehicle})'
         else:
             return f'{self.title}'
     

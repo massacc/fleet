@@ -1,0 +1,68 @@
+{% extends "fleetmanager/base.html" %}
+{% load i18n %}
+{% load django_bootstrap5 %}
+{% load crispy_forms_tags %}
+
+{% block title %}Manager floty{% endblock %}
+
+{% block content %}
+    <div>
+        <h1>{% trans "Registrations" %}</h1>
+    </div>
+    <div>
+        <h3>{% trans "Registration plate:" %} {{ vehicle.active_plate }}</h3>
+    </div>
+    
+        
+
+
+        
+    <form action='{% url "vehicles:registrations" vehicle.id %}' method="post">
+       
+        {% csrf_token %}
+      
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">{% trans "Registration plate" %}</th>
+            <th scope="col">{% trans "Start date" %}</th>
+            <th scope="col">{% trans "End date" %}</th>
+            <th scope="col">{% trans "Active" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+        {{ registrations.management_form }}
+        {% for reg in registrations %}
+        {{ reg.id }}
+          <tr>
+            
+            <th scope="row">{{ forloop.counter }}</th>
+            
+            <td>
+              <a class="link-dark">
+                {{ reg.plate }}</a>
+            </td>
+            <td>
+                {{ reg.start_date }}
+            </td>
+            <td><a class="link-dark">
+                {{ reg.end_date }}</a>
+            </td>
+            <td><a class="link-dark">
+              {{ reg.active }}</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+        
+    
+      <button type="submit" value="Zapisz">{% trans "Save" %}</button>
+    
+    </form>
+
+
+
+{% endblock %}

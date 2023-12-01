@@ -1,5 +1,6 @@
 from tokenize import Token
 from django.http import HttpResponse
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from .models import Vehicle, VehicleModel, Registration
 import csv
@@ -7,13 +8,18 @@ import datetime
 from .filters import VehicleFilter
 from .forms import VehicleForm, RegistrationForm, VehicleDeleteConfirmForm
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 
 from rest_framework import viewsets
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
 from .serializers import VehicleSerializer, RegistrationSerializer
 from rest_framework.authentication import TokenAuthentication
+from django.forms import modelformset_factory
 
 @login_required
+@permission_required("vehicle.view_vehicle")
 def vehicle_filter(request):
     f = VehicleFilter(request.GET, queryset=Vehicle.objects.all())
 
@@ -39,20 +45,71 @@ def vehicle_filter(request):
 @login_required
 def edit(request, pk):
     vehicle = get_object_or_404(Vehicle, pk=pk)
+    vehicle_form = VehicleForm(instance=vehicle, prefix='vehicle-form')
+    RegistrationFormSet = modelformset_factory(Registration, form = RegistrationForm, can_delete = True)
+    queryset = vehicle.registrations.all()
+    registration_formset = RegistrationFormSet(queryset = queryset, prefix='registration-form')
+    print('edytuje')
     if request.method=='POST':
-        if pk:
-            vehicle_form = VehicleForm(request.POST, instance=vehicle)
-        else:
-            vehicle_form = VehicleForm(request.POST)
+       
+        vehicle_form = VehicleForm(request.POST, instance=vehicle, prefix='vehicle-form')
+        registration_formset = RegistrationFormSet(request.POST,request.FILES, queryset = queryset, prefix='registration-form')
+        
         if vehicle_form.is_valid():
-            vehicle_form.save()
-    else:
-        vehicle_form = VehicleForm(instance=vehicle)
+            print('vehicle is valid')
+            v = vehicle_form.save()
+            for rf in registration_formset:
+                print('zapisuje dane')
+                if rf.is_valid() and rf.cleaned_data != {}:
+                    print('rf is valid')
+                    rm = rf.save(commit = False)
+                    rm.vehicle = v
+                    rm.save()
+                
+                else:
+                    print('błąd w rejestracji')
+                    print(rf.errors)
+        else:
+            print('błąd w vehicle')
+            print(vehicle_form.errors)
+            
 
     return render(request,
                 'vehicles/detail.html',
                 {'vehicle_form':vehicle_form,
-                'vehicle':vehicle})
+                'vehicle':vehicle, 
+                'registration': registration_formset})
+@login_required
+def registrations_list(request, vehicle_id):
+    vehicle = get_object_or_404(Vehicle, pk=vehicle_id)
+    #vehicle_form = VehicleForm(instance=vehicle, prefix='vehicle-form')
+    RegistrationFormSet = modelformset_factory(Registration, form = RegistrationForm, can_delete = True)
+    queryset = vehicle.registrations.all()
+    registration_formset = RegistrationFormSet(queryset = queryset, prefix='registration-form')
+    
+    if request.method=='POST':
+       
+        #vehicle_form = VehicleForm(request.POST, instance=vehicle, prefix='vehicle-form')
+        registration_formset = RegistrationFormSet(request.POST,request.FILES, queryset = queryset, prefix='registration-form')
+        
+        registration_formset.save()
+        
+        
+        #for rf in registration_formset.forms:
+        #    if rf.is_valid() and rf.cleaned_data != {}:
+        #        rm = rf.save(commit = False)
+        #        rm.vehicle = vehicle
+        #        rm.save()
+        #        
+        #    else:
+        #        print('#######################################')
+        #        print(rf.errors)
+        #        print('#######################################')
+        
+    return render(request,
+                'vehicles/registrations.html',
+                {'vehicle':vehicle, 
+                'registrations': registration_formset})
 
 @login_required
 def create(request):
@@ -162,10 +219,41 @@ class VehicleViewSet(viewsets.ModelViewSet):
     queryset = Vehicle.objects.all()
     serializer_class = VehicleSerializer
     authentication_classes = [TokenAuthentication]
+    #search_fields = ['active_plate']
     
+    def get_queryset(self):
+        qs = Vehicle.objects.all()
+        plate = self.request.query_params.get('plate')
+        if plate is not None:
+            qs = qs.filter(registrations__plate__icontains=plate, registrations__active=True )
+            print('plate', plate)
+        return qs
+    
+
 class RegistrationViewSet(viewsets.ModelViewSet):
     queryset = Registration.objects.all()
     serializer_class = RegistrationSerializer
     authentication_classes = [TokenAuthentication]
+
+
+class ListVehicles(APIView):
+    
+    def get_queryset(self):
+        qs = Vehicle.objects.none()
+        return qs
+    
+    def get(self, request, format=None):
+        response = {'results':[]}
+        vehicles = Vehicle.objects.all()
+        for vehicle in vehicles:
+            response['results'].append(
+                {'id':vehicle.id, 'text':vehicle.active_plate}
+            )
+        #print(response)
+        x = JsonResponse(response)
+        print(x.content)
+        return x
+
+
 
     

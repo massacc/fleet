@@ -39,6 +39,7 @@ urlpatterns = i18n_patterns(
     path('documents/', include('documents.urls', namespace='documents')),
     path('vehicles/', include('vehicles.urls', namespace='vehicles')),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('searchableselect/', include('searchableselect.urls')),
 )
 
 if settings.DEBUG:

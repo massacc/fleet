@@ -10,10 +10,11 @@
         <button type="submit" class="btn btn-secondary">{% trans "Search" %}</button>
     </form>
 
-
     <p class="pt-4 pb-2">
         <a href= "{% url 'documents:create' %}" class="link-success">{% trans "Add document" %}</a>
     </p>
+
+    <Test/>
 
     <div>
     <form action='{% url "documents:documents" %}' method='post'> {% csrf_token %}
@@ -29,6 +30,7 @@
         </thead>
         <tbody>
             {% for document in filter.qs %}
+                {% for vehicle in document.vehicle.all %}
                 <tr>
                     <th scope="row">{{ forloop.counter }}</th>
                     <td>
@@ -36,7 +38,7 @@
                     </td>
                     <td>
                         <a href="{{ document.get_absolute_url }}" class="link-dark">
-                            {{ document.active_plate }}</a>
+                            {{ vehicle.active_plate }}</a>
                     </td>
                     <td><a href="{{ document.get_absolute_url }}" class="link-dark">
                             {{ document.title }}</a>
@@ -45,6 +47,7 @@
                             {{ document.file }}</a>
                     </td>
                 </tr>
+                {% endfor %}    
             {% endfor %}
         </tbody>
     </table>

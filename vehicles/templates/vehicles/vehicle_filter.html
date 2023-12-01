@@ -5,14 +5,27 @@
 {% block title %}Vehicles{% endblock %}
 
 {% block content %}
+    <div class="pt-4 pb-2">
+    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+      Advanced search
+    </button>
+    </div>
+  <div class="collapse" id="collapseExample">
+    <div class="card card-body">
     <form method="get">
         {{ filter.form|crispy }}
         <button type="submit" class="btn btn-secondary">{% trans "Search" %}</button>
+        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            Close
+          </button>
     </form>
+    </div>
+</div>
+
 
 
     <p class="pt-4 pb-2">
-        <a href= "{% url 'vehicles:create' %}" class="link-success">{% trans "Add vehicle" %}</a>
+        <a href= "{% url 'vehicles:create' %}" class="btn btn-primary" role="'button">{% trans "Add vehicle" %}</a>
     </p>
 
     <div>
@@ -36,7 +49,7 @@
                     </td>
                     <td>
                         <a href="{{ vehicle.get_absolute_url }}" class="link-dark">
-                            {{ vehicle.plate }}</a>
+                            {{ vehicle.active_plate }}</a>
                     </td>
                     <td><a href="{{ vehicle.get_absolute_url }}" class="link-dark">
                             {{ vehicle.name }}</a>

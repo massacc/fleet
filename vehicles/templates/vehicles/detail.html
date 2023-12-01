@@ -2,25 +2,187 @@
 {% load i18n %}
 {% load django_bootstrap5 %}
 {% load crispy_forms_tags %}
+{% load static %}
+
 
 {% block title %}Manager floty{% endblock %}
 
 {% block content %}
-
-    <h1>{% trans "Vehicle details" %}</h1>
-    <h3>{% trans "Registraion plate" %}</h3>
-    <h2>{{ vehicle.plate }}</h2>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <div>
+        <h1>{% trans "Vehicle details" %}</h1>
+    </div>
+    <div>
+        <h3>{% trans "Registration plate:" %} {{ vehicle.active_plate }}</h3>
+    </div>
+    
         <!-- to do: registration plates managment :) form -->
         <!-- <a href="%{ url 'vehicle:registration_list' vehicle.id }%" class="link-secondary">Change</a> -->
         <a href="{% url 'vehicles:reg_add' vehicle.id %}" class="link-secondary">{% trans "Change" %}</a>
 
 
-
+    <div>
     <form action='{% url "vehicles:edit" vehicle.id %}' method="post">
-        {{ vehicle_form|crispy }}
-        {% csrf_token %}
-        <button type="submit" value="Zapisz">{% trans "Save" %}</button>
+      
+      {% csrf_token %}
+        
+      {{ vehicle_form |crispy }} 
+      
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">{% trans "Registration plate" %}</th>
+            <th scope="col">{% trans "Start date" %}</th>
+            <th scope="col">{% trans "End date" %}</th>
+            <th scope="col">{% trans "Active" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{ registration.management_form }}
+          {% for reg in registration %}
+          {{ reg.id }}
+          <tr>
+            
+            <th scope="row">{{ forloop.counter }}</th>
+            
+            <td>
+              <a class="link-dark">
+                {{ reg.plate }}</a>
+            </td>
+            <td>
+                {{ reg.start_date }}
+            </td>
+            <td><a class="link-dark">
+                {{ reg.end_date }}</a>
+            </td>
+            <td><a class="link-dark">
+              {{ reg.active }}</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
 
+      <button type="submit" class="btn btn-primary" value="Zapisz">{% trans "Save" %}</button>
+    
     </form>
+
+    </div>
+    <p>
+      <button type="button"  class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          {% trans "Show modal" %}
+      </button>
+      <button type="button" class="btn btn-primary" name="special-button" id="special-button">
+        Run javascript code
+    </button>
+    </p>
+
+    <div>
+      <ol id="test-list">
+        <li>pierwsze</li>
+        <li>drugie</li>
+        <li>trzecie</li>
+      </ol>
+    </div>
+    
+      
+      
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <!--
+              <input type="text" id="search-input"/>
+              <ul id="vehicle-search-list">
+                
+              </ul>
+              -->
+              <!-- <select class="js-example-basic-single" name="vehicle-search">
+              -->
+              <select class="js-data-example-ajax" name="vehicle-search">
+                <option value="1">EBR44TT</option>
+                <option value="2">EBR55TT</option>
+              </select>
+              
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a href="{% url 'documents:documents' %}" class="btn btn-secondary" data-bs-dismiss="modal">Save</a>
+                <a id='btn-get' class="btn btn-secondary" >Zapisz</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script >
+  $(document).ready(function() {
+    $(".js-data-example-ajax").select2()
+  });
+</script>
+
+<!--
+  {
+    ajax: {
+      url: "http://127.0.0.1:8000/vehicles/vehicle/list",
+      dataType: 'json'
+      // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+      }
+        }
+      )
+      console.log('poszło');
+    }
+<script >
+  let s = 0
+  
+  function searchVehicle(data){
+                
+                $('#vehicle-search-list li').remove();
+                $.each(data, function(i, vehicle){
+                  var li = $("<li></li>");
+                  
+                  li.text(vehicle.active_plate);
+                  li.appendTo($('#vehicle-search-list'));
+                });
+              };
+            
+  $(document).ready(
+    function(){
+      $("#search-input").on('keyup',
+        function(){
+            $('#vehicle-search-list li').remove();
+            var url = "http://127.0.0.1:8000/pl/api/vehicles?plate="+$("#search-input").val();
+            $.ajax({
+              url:url,
+              type:"GET",
+              dataType:"json"
+            })
+            .done(function(data){
+                
+                
+                $.each(data, function(i, vehicle){
+                  var li = $("<li></li>");
+                  
+                  li.text(vehicle.active_plate);
+                  li.appendTo($('#vehicle-search-list'));
+                });
+              });
+            });
+        });
+
+          
+-->
+</script>
+
+
+    
 
 {% endblock %}

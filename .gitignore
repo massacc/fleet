@@ -99,6 +99,12 @@ venv.bak/
 # Django
 db.sqlite3
 
+# media
+media/
+
 # rest
 rest_framework/
 django-rest-framework/
+
+# React
+fleet-manager

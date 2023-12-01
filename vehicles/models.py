@@ -180,8 +180,9 @@ class Registration(models.Model):
         return f'{self.plate}'
 
     def get_absolute_url(self):
-        return reverse('vehicle:',
+        return reverse('registrations:',
                         args = [self.pk])
     class Meta:
-       constraints = [UniqueConstraint(fields=['plate', 'start_date'], name='unuque_plate')]
+       constraints = [UniqueConstraint(fields=['plate', 'start_date'], name='unique_plate'), 
+                        UniqueConstraint(fields=['plate', 'active'], name='unique_active_plate')]
 
